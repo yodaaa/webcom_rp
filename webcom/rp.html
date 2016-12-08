@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>家計簿</title>
+
+    <!-- BootstrapのCSS読み込み -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery読み込み -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- BootstrapのJS読み込み -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        function showHide(foldingID, hib) {
+            if (document.getElementById(foldingID)) {
+                if (document.getElementById(foldingID).style.display == "none") {
+                    document.getElementById(foldingID).style.display = "block";
+                    document.getElementById(hib).innerHTML = "隠す";
+                }
+                else {
+                    document.getElementById(foldingID).style.display = "none";
+                    document.getElementById(hib).innerHTML = "表示";
+
+                }
+            }
+        }
+
+        function pDate() {
+            var date = new Date()
+            var year = date.getFullYear()
+            var month = date.getMonth() + 1
+            var day = date.getDate()
+
+            var toTargetDigits = function (num, digits) {
+                num += ''
+                while (num.length < digits) {
+                    num = '0' + num
+                }
+                return num
+            }
+            var yyyy = toTargetDigits(year, 4)
+            var mm = toTargetDigits(month, 2)
+            var dd = toTargetDigits(day, 2)
+            console.log(yyyy + '-' + mm + '-' + dd)
+            document.addform.date.value = yyyy + "-" + mm + "-" + dd;
+        }
+
+        (function ($) {
+            // 追加ボタンクリックでメッセージを表示
+            $('#addbutton').on('click', function () {
+                /*
+                 * 1秒かけてメッセージを表示し、
+                 * その後2秒間何もせず、
+                 * その後2秒かけてメッセージを非表示にする
+                 */
+                $('.alert').fadeIn(1000).delay(2000).fadeOut(2000);
+            });
+            // メッセージ内の×ボタンクリックでメッセージを非表示にする
+            $('.alert .close').on('click', function () {
+                $(this).parents('.alert').hide();
+            });
+        })(jQuery);
+
+        (function ($) {
+            // 削除ボタンクリックでメッセージを表示
+            $('#delbutton').on('click', function () {
+                /*
+                 * 1秒かけてメッセージを表示し、
+                 * その後2秒間何もせず、
+                 * その後2秒かけてメッセージを非表示にする
+                 */
+                $('.alert').fadeIn(1000).delay(2000).fadeOut(2000);
+            });
+            // メッセージ内の×ボタンクリックでメッセージを非表示にする
+            $('.alert .close').on('click', function () {
+                $(this).parents('.alert').hide();
+            });
+        })(jQuery);
+    </script>
+
+</head>
+<body onLoad="pDate();showHide('test', 'hib')">
+<div class="container" style="background-color: white">
+
+    <!-----header---------------------------------------------------->
+    <div class="page-header text-center ">
+        <h2>WEBCOM レポート 家計簿 </h2>
+    </div>
+
+    <!-----サイドバー-------------------------------------------------->
+    <div class="col-sm-3 hidden-xs " style="margin-top:20px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Menu
+            </div>
+            <div class="panel-body">
+                <ul class="nav nav-pills nav-stacked " id="sidebar">
+                    <li class="active"><a href="#add">データ追加</a></li>
+                    <li><a href="#show">データ一覧</a></li>
+                    <li><a href="#delete">データ削除</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-----Main--------------------------------------------------------->
+    <div class="col-sm-9">
+        <!-----データ追加------------------------------------------------->
+        <div class="panel panel-default" id="add" style="margin-top:20px;">
+            <div class="panel-heading">
+                <h4>データ追加</h4>
+            </div>
+            <div class="panel-body">
+                <!-----form-------------------------------------------------->
+                <form action="/webcom/servlet/Rp_add" method="GET" name="addform">
+                    <div class="form-group">
+                        <label>日時</label>
+                        <input type="date" class="form-control" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>購入金額</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="price" placeholder="購入金額を入力" min="1"
+                                   required>
+                            <span class="input-group-addon">円</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>購入品目</label>
+                        <select class="form-control" name="item" required>
+                            <option value="" disabled selected>選択してください</option>
+                            <option value="食費">食費</option>
+                            <option value="交通費">交通費</option>
+                            <option value="趣味・娯楽">趣味・娯楽</option>
+                            <option value="日用品">日用品</option>
+                            <option value="衣服・美容">衣服・美容</option>
+                            <option value="交際費">交際費</option>
+                            <option value="住宅">住宅</option>
+                            <option value="水道・光熱費">水道・光熱費</option>
+                            <option value="自動車">自動車</option>
+                            <option value="保険">保険</option>
+                            <option value="生活費">生活費</option>
+                            <option value="教養・教育">教養・教育</option>
+                            <option value="通信費">通信費</option>
+                            <option value="健康・医療">健康・医療</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>購入店舗</label>
+                        <input type="text" class="form-control" name="shop" placeholder="購入店舗を入力" required>
+                    </div>
+                    <input type="submit" value="追加" class="btn btn-primary btn-lg btn-block " id="addbutton"/>
+                </form>
+                <!----追加完了通知----------------------------------->
+                <div class="alert alert-info" style="display: none; margin-top: 10px">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>データを追加しました。</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-----データ表示-------------------------------------------------->
+        <div class="panel panel-default" id="show" style="margin-top:40px;">
+            <div class="panel-heading">
+                <h4>データ一覧</h4>
+            </div>
+            <div class="panel-body">
+                <form action="/webcom/servlet/Rp_view" method="GET">
+                    <input type="submit" value="表示" class="btn btn-link btn-md">
+                </form>
+            </div>
+        </div>
+
+        <!-----データ削除-------------------------------------------------->
+        <div class="panel panel-default" id="delete" style="margin-top:40px; margin-bottom: 30px">
+            <div class="panel-heading">
+                <h4>データ削除</h4>
+            </div>
+            <div class="panel-body">
+                <!-----form-------------------------------------------------->
+                <form class="form-inline" action="/webcom/servlet/Rp_del" method="GET">
+                    <div class="form-group">
+                        <label>削除するID</label>
+                        <input type="number" class="form-control" name="delid" placeholder="ID" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-danger" id="delbutton">削除</button>
+                    </div>
+                </form>
+                <!----削除完了通知----------------------------------->
+                <div class="alert alert-info" style="display: none; margin-top: 10px">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>データを削除しました。</strong>
+                </div>
+            </div>
+        </div>
+
+        <!------------------------------------------------------->
+        <p id="pageTop"><a href="#" class="btn btn-default">page top</a></p>
+    </div>
+</div>
+</body>
+</html>
